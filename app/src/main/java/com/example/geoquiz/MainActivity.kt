@@ -22,8 +22,11 @@ class MainActivity : ComponentActivity() {
     private lateinit var mTrueButton: Button
     private lateinit var mFalseButton: Button
     private lateinit var mNextButton: Button
+    private lateinit var mPrevButton: Button
     private lateinit var mQuestionTextView: TextView
+
     private var mCurrentIndex: Int = 0
+
     private val mQuestionBank = listOf<Question>(
         Question(R.string.question_australia, true),
         Question(R.string.question_oceans, true),
@@ -40,26 +43,35 @@ class MainActivity : ComponentActivity() {
 
         mQuestionTextView = findViewById(R.id.question_text_view);
         updateQuestion()
-
-        mTrueButton = findViewById(R.id.true_button)
-        mTrueButton.setOnClickListener(View.OnClickListener {
-            val toast: Toast = Toast.makeText(this, R.string.correct_toast, Toast.LENGTH_SHORT)
-            toast.setGravity(Gravity.TOP, 0, 0)
-            toast.show()
-        })
-
-        mFalseButton = findViewById(R.id.false_button)
-        mFalseButton.setOnClickListener(View.OnClickListener {
-            val toast: Toast = Toast.makeText(this, R.string.incorrect_toast, Toast.LENGTH_SHORT)
-            toast.setGravity(Gravity.TOP, 0, 0)
-            toast.show()
-        })
-
-        mNextButton = findViewById(R.id.next_button)
-        mNextButton.setOnClickListener(View.OnClickListener {
+        mQuestionTextView.setOnClickListener {
             mCurrentIndex = (mCurrentIndex + 1) % mQuestionBank.size
             updateQuestion()
-        })
+        }
+
+        mTrueButton = findViewById(R.id.true_button)
+        mTrueButton.setOnClickListener{
+            checkAnswer(true)
+        }
+
+        mFalseButton = findViewById(R.id.false_button)
+        mFalseButton.setOnClickListener{
+            checkAnswer(false)
+        }
+
+        mNextButton = findViewById(R.id.next_button)
+        mNextButton.setOnClickListener{
+            mCurrentIndex = (mCurrentIndex + 1) % mQuestionBank.size
+            updateQuestion()
+        }
+
+        mPrevButton = findViewById(R.id.prev_button)
+        mPrevButton.setOnClickListener{
+            mCurrentIndex = (mCurrentIndex - 1) % mQuestionBank.size
+            if (mCurrentIndex < 0){
+                mCurrentIndex = 0
+            }
+            updateQuestion()
+        }
     }
 
     private fun updateQuestion(): Unit{
@@ -67,6 +79,15 @@ class MainActivity : ComponentActivity() {
         mQuestionTextView.setText(question)
     }
 
+    private fun checkAnswer(userPressedAnswer: Boolean): Unit {
+        val trueAnswer: Boolean = mQuestionBank[mCurrentIndex].mAnswerTrue
+        val messageResId = if (trueAnswer == userPressedAnswer){
+            R.string.correct_toast
+        } else {
+            R.string.incorrect_toast
+        }
+        Toast.makeText(this, messageResId, Toast.LENGTH_SHORT).show()
+    }
 }
 
 
