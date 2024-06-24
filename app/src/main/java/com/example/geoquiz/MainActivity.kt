@@ -5,6 +5,7 @@ import android.os.Bundle
 import android.view.Gravity
 import android.view.View
 import android.widget.Button
+import android.widget.ImageButton
 import android.widget.TextView
 import android.widget.Toast
 import androidx.activity.ComponentActivity
@@ -21,8 +22,8 @@ import com.example.geoquiz.ui.theme.GeoQuizTheme
 class MainActivity : ComponentActivity() {
     private lateinit var mTrueButton: Button
     private lateinit var mFalseButton: Button
-    private lateinit var mNextButton: Button
-    private lateinit var mPrevButton: Button
+    private lateinit var mNextButton: ImageButton
+    private lateinit var mPrevButton: ImageButton
     private lateinit var mQuestionTextView: TextView
 
     private var mCurrentIndex: Int = 0
